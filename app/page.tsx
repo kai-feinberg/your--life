@@ -3,6 +3,7 @@
 import { Player } from "@remotion/player";
 import type { NextPage } from "next";
 import React, { useMemo, useState } from "react";
+import { Prompt } from "@/components/Prompt";
 import { Main } from "../remotion/MyComp/Main";
 import {
   CompositionProps,
@@ -30,7 +31,7 @@ const Home: NextPage = () => {
     <div>
       <div className="max-w-screen-md m-auto mb-5">
         <div className="overflow-hidden rounded-geist shadow-[0_0_200px_rgba(0,0,0,0.15)] mb-10 mt-16">
-          
+          <Prompt/>
           
           
           {/* <Player
