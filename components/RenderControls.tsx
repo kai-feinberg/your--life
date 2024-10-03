@@ -20,8 +20,8 @@ export const RenderControls: React.FC<{
   return (
     <InputContainer>
       {state.status === "init" ||
-      state.status === "invoking" ||
-      state.status === "error" ? (
+        state.status === "invoking" ||
+        state.status === "error" ? (
         <>
           <Input
             disabled={state.status === "invoking"}

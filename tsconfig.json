@@ -19,14 +19,24 @@
       {
         "name": "next"
       }
-    ]
+    ],
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"]
+    },
+
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "remotion/webpack-override.mjs"
+    "remotion/webpack-override.mjs",
+    
   ],
+  
   "exclude": ["node_modules", "remotion.config.ts"]
 }
