@@ -10,6 +10,7 @@ const openai = new OpenAI({
 
 // [in the style of a documentary]
 // [ provide a narration ]
+// [Distinct headings]
 
 
 export async function GET(req: Request) {
@@ -20,11 +21,14 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
+    // Prepend the pre-prompts to the user prompt
+    const fullPrompt = `in the style of a documentary\n provide a narration\n with Distinct headings\n\n${prompt}`;
+
     try {
       // Call OpenAI API to generate a script
       const response = await await openai.chat.completions.create({
         model: 'gpt-4',
-        messages: [{ role: 'user', content: prompt }],
+        messages: [{ role: 'user', content: fullPrompt }],
         max_tokens: 500, // Adjust this as needed
       });
     
