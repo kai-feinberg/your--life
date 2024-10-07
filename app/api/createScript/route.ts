@@ -8,6 +8,10 @@ const openai = new OpenAI({
 });
 
 
+// [in the style of a documentary]
+// [ provide a narration ]
+
+
 export async function GET(req: Request) {
  //take script prompt from query
     const prompt = new URL(req.url).searchParams.get('prompt');
