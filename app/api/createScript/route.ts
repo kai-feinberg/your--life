@@ -1,11 +1,45 @@
-//uses open ai's api to create a script based off of a promp
+//uses open ai's api to create a script based off of a prompt
 
 import { NextResponse } from 'next/server';
+import { OpenAI } from 'openai';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // Store your API key in environment variables
+});
+
 
 export async function GET(req: Request) {
  //take script prompt from query
     const prompt = new URL(req.url).searchParams.get('prompt');
-  try {
+
+    if(!prompt){
+      return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
+    }
+
+    try {
+      // Call OpenAI API to generate a script
+      const response = await await openai.chat.completions.create({
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 500, // Adjust this as needed
+      });
+    
+     // Extract the generated text
+      const generatedScript = response.choices[0]?.message?.content;
+
+      if (!generatedScript) {
+        throw new Error('No script generated');
+     }
+ 
+      return NextResponse.json({ data: generatedScript}, { status: 200 });
+   }  catch (error) {
+      console.error('Error creating script:', error);
+      return NextResponse.json({ error: 'Error creating script' }, { status: 500 });
+   }
+ }  
+
+
+ /*  try {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const exampleResponse = `Barack Hussein Obama II[a] (born August 4, 1961) is an American politician who served as the 44th president of the United States from 2009 to 2017. As a member of the Democratic Party, he was the first African-American president in U.S. history. Obama previously served as a U.S. senator representing Illinois from 2005 to 2008 and as an Illinois state senator from 1997 to 2004.
@@ -17,9 +51,11 @@ Obama defeated Republican opponent Mitt Romney in the 2012 presidential election
 
 Obama left office on January 20, 2017, and continues to reside in Washington, D.C. Historians and political scientists rank him among the upper tier in historical rankings of American presidents. His presidential library in the South Side of Chicago began construction in 2021. Since leaving office, Obama has remained politically active, campaigning for candidates in various American elections, including Biden's successful presidential bid in 2020. Outside of politics, Obama has published three books: Dreams from My Father (1995), The Audacity of Hope (2006), and A Promised Land (2020).`
    
-    return NextResponse.json({ data: exampleResponse +prompt }, { status: 200 });
-  } catch (error) {
+    return NextResponse.json({ data: exampleResponse + prompt }, { status: 200 });
+  } 
+  
+ /*  catch (error) {
     console.error('Error creating script:', error);
     return NextResponse.json({ error: 'Error ' }, { status: 500 });
-  }
-}
+} }*/
+
