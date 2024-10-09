@@ -12,6 +12,8 @@ export const Prompt = () => {
   const [script, setScript] = useState<string>('')
   const [loadingScript, setLoadingScript] = useState<boolean>(false)
 
+
+
   const generateScript = async () => {
     setLoadingScript(true)
     const response = await fetch(`/api/createScript?prompt=${encodeURIComponent(scriptPrompt)}`)
@@ -48,7 +50,7 @@ export const Prompt = () => {
         </div>
         <Button
           onClick={generateScript}
-          disabled={loadingScript || !scriptPrompt || script.length > 0}
+          disabled={loadingScript || !scriptPrompt || (script.length && script.length) > 0}
           className="w-full"
         >
           {loadingScript ? (
