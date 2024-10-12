@@ -33,7 +33,7 @@ const Home: NextPage = () => {
         <div>
           <Prompt />
 
-
+{/* 
           <Player
             component={Main}
             inputProps={inputProps}
@@ -50,7 +50,6 @@ const Home: NextPage = () => {
             autoPlay
             loop
           />
-          {/* </> */}
           <RenderControls
             text={text}
             setText={setText}
@@ -60,7 +59,7 @@ const Home: NextPage = () => {
           <Spacing></Spacing>
           <Spacing></Spacing>
           <Spacing></Spacing>
-          <Tips></Tips>
+          <Tips></Tips> */}
         </div>
       </div>
     </div>
