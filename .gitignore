@@ -40,3 +40,6 @@ next-env.d.ts
 out/
 .env
 build
+
+#googleserviceaccount: 
+.google-service-account.json
