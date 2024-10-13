@@ -31,10 +31,10 @@ const Home: NextPage = () => {
     <div>
       <div className="max-w-screen-md m-auto mb-5">
         <div>
-          <Prompt/>
-          
-          
-          {/* <Player
+          <Prompt />
+
+{/* 
+          <Player
             component={Main}
             inputProps={inputProps}
             durationInFrames={DURATION_IN_FRAMES}
@@ -50,17 +50,16 @@ const Home: NextPage = () => {
             autoPlay
             loop
           />
-        </div>
-        <RenderControls
-          text={text}
-          setText={setText}
-          inputProps={inputProps}
-        ></RenderControls>
-        <Spacing></Spacing>
-        <Spacing></Spacing>
-        <Spacing></Spacing>
-        <Spacing></Spacing>
-        <Tips></Tips> */}
+          <RenderControls
+            text={text}
+            setText={setText}
+            inputProps={inputProps}
+          ></RenderControls>
+          <Spacing></Spacing>
+          <Spacing></Spacing>
+          <Spacing></Spacing>
+          <Spacing></Spacing>
+          <Tips></Tips> */}
         </div>
       </div>
     </div>
