@@ -1,3 +1,5 @@
+//Prompt.tsx
+
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -13,18 +15,20 @@ export const Prompt = () => {
   const [loadingScript, setLoadingScript] = useState<boolean>(false)
   const [audioUrls, setAudioUrls] = useState<string[]>([])
 
-  const text = `
+//   const text = `
   
-#Steph Currys Early Life
-Steph Curry was born on March 14, 1988, in Akron, Ohio, but grew up in Charlotte, North Carolina, where his father, Dell Curry, was playing for the Charlotte Hornets. Raised in a basketball family, Steph and his brother Seth often played under the guidance of their father. Despite his basketball upbringing, Steph was never viewed as a sure-fire star. He was smaller and lighter than his peers, and many doubted his potential to play at a high level.
+// #Steph Currys Early Life
+// Steph Curry was born on March 14, 1988, in Akron, Ohio, but grew up in Charlotte, North Carolina, where his father, Dell Curry, was playing for the Charlotte Hornets. Raised in a basketball family, Steph and his brother Seth often played under the guidance of their father. Despite his basketball upbringing, Steph was never viewed as a sure-fire star. He was smaller and lighter than his peers, and many doubted his potential to play at a high level.
 
-#High School Struggles
-In high school, Curry attended Charlotte Christian, where he led his team to multiple state playoff appearances, but his size and build made him a less attractive recruit for major college programs. He wasn’t tall or physically dominant, so despite his sharp shooting, major universities passed on him. This led Steph to choose Davidson College, a small school that offered him a scholarship and a chance to prove himself on a bigger stage.
+// #High School Struggles
+// In high school, Curry attended Charlotte Christian, where he led his team to multiple state playoff appearances, but his size and build made him a less attractive recruit for major college programs. He wasn’t tall or physically dominant, so despite his sharp shooting, major universities passed on him. This led Steph to choose Davidson College, a small school that offered him a scholarship and a chance to prove himself on a bigger stage.
 
-#Breakout at Davidson College
-At Davidson, Steph Curry’s name began to echo across the college basketball world. In his sophomore year, during the 2008 NCAA tournament, Curry led Davidson to the Elite Eight, captivating fans with his incredible shooting range and fearless style of play. He became a national sensation almost overnight. His performances against powerhouse schools like Georgetown and Wisconsin marked him as one of the most exciting players in the country, despite coming from a small school.
-`
-const generateAudio = async () => {
+// #Breakout at Davidson College
+// At Davidson, Steph Curry’s name began to echo across the college basketball world. In his sophomore year, during the 2008 NCAA tournament, Curry led Davidson to the Elite Eight, captivating fans with his incredible shooting range and fearless style of play. He became a national sensation almost overnight. His performances against powerhouse schools like Georgetown and Wisconsin marked him as one of the most exciting players in the country, despite coming from a small school.
+// `
+
+//GENERATE AUDIO 
+const generateAudio = async (text: string) => {
   const response = await fetch('/api/generateAudio', {
     method: 'POST',
     headers: {
@@ -54,14 +58,23 @@ const generateAudio = async () => {
 };
 
 
-
+//GENERATE Script
 
   const generateScript = async () => {
     setLoadingScript(true)
     const response = await fetch(`/api/createScript?prompt=${encodeURIComponent(scriptPrompt)}`)
     const data = await response.json()
-    setScript(data.data)
-    setLoadingScript(false)
+    if (data.error) {
+      console.error('Error creating script:', data.error);
+      setLoadingScript(false);
+      return;
+    }
+    const generatedScript = data.data;
+    setScript(generatedScript);
+    setLoadingScript(false);
+
+    // Pass the generated script to generate the audio
+    await generateAudio(generatedScript);
   }
 
   const restart = () => {
