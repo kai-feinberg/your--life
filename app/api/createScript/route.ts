@@ -1,3 +1,4 @@
+//route.ts (for createScript)
 //uses open ai's api to create a script based off of a prompt
 
 import { NextResponse } from 'next/server';
@@ -22,12 +23,12 @@ export async function GET(req: Request) {
     }
 
     // Prepend the pre-prompts to the user prompt
-    const fullPrompt = `in the style of a documentary\n provide a narration\n with Distinct headings\n\n${prompt}`;
+    const fullPrompt = `In the style of documentary, provide a narration with distinct headings. \n Keep the script concise and suitable for a 1-minute voiceover (Beginning, Middle, Conlcusion). \n Please include links to at least two reliable sources at the end of the script.\n\n${prompt}`;
 
     try {
       // Call OpenAI API to generate a script
       const response = await await openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-4o-mini',
         messages: [{ role: 'user', content: fullPrompt }],
         max_tokens: 500, // Adjust this as needed
       });
