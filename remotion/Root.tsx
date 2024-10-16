@@ -1,9 +1,10 @@
 import { Composition } from "remotion";
 import { Main } from "./MyComp/Main";
-import { Test } from "./MyComp/Test";
+import { Test } from "./MyComp/VideoSection";
 import {
   COMP_NAME,
   defaultMyCompProps,
+  videoProps,
   DURATION_IN_FRAMES,
   VIDEO_FPS,
   VIDEO_HEIGHT,
@@ -14,7 +15,7 @@ import { NextLogo } from "./MyComp/NextLogo";
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-      <Composition
+      {/* <Composition
         id={COMP_NAME}
         component={Main}
         durationInFrames={DURATION_IN_FRAMES}
@@ -33,7 +34,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           outProgress: 0,
         }}
-      />
+      /> */}
       <Composition
         id="Test"
         component={Test}
@@ -41,7 +42,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={900}
         height={600}
-        defaultProps={defaultMyCompProps}
+        defaultProps={videoProps}
       />
     </>
   );
