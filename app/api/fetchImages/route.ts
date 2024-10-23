@@ -6,18 +6,19 @@ import axios from 'axios';
 
 // Store your Getty Images API key securely in environment variables
 const GETTY_API_KEY = process.env.GETTY_IMAGES_API_KEY;
+const GETTY_API_SECRET = process.env.GETTY_IMAGES_API_SECRET;
 
 export async function GET(req: Request) {
   try {
     // Dummy test script with headings
     const script = `
-      # Early Life
-      Stephen Curry was born in Akron, Ohio, in 1988...
+      # Steph Curry 1992
+      Stephen Curry was born in Akron, Ohio, in 1992...
 
-      # High School Career
+      # Steph Curry Davidson
       Curry played high school basketball in Charlotte...
 
-      # College Career
+      # Stephen CUrry Warriors
       At Davidson College, Curry became a household name...
     `;
 
