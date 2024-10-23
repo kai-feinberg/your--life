@@ -29,7 +29,7 @@ yarn-error.log*
 .env*.local
 
 
-.google-service-account.json
+google-service-account.json
 
 # vercel
 .vercel
