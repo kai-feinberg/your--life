@@ -2,21 +2,23 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Loader2, Wand2, RotateCcw } from 'lucide-react'
+import { Loader2, Wand2, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Define the type for the onScriptGenerated callback
-type OnScriptGeneratedFunction = (script: string, mp3Files: string[], imageSections: string[][]) => void;
+type OnScriptGeneratedFunction = (script: string, audioUrls: string[], imageSections: string[][]) => void;
 
 export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> = ({ onScriptGenerated }) => {
   const [scriptPrompt, setScriptPrompt] = useState<string>('');
   const [script, setScript] = useState<string>('');
   const [loadingScript, setLoadingScript] = useState<boolean>(false);
   const [audioUrls, setAudioUrls] = useState<string[]>([]);
-  const [fetchedImages, setFetchedImages] = useState<string[]>([]); // Store fetched image URLs here
+  const [imageSections, setImageSections] = useState<string[][]>([]); // array of image URLs for each section
   const [loadingImages, setLoadingImages] = useState<boolean>(false); // Loading state for images
-  const [imageSections, setImageSections] = useState<string[][]>([]);
+  const [loadingAssets, setLoadingAssets] = useState<boolean>(false); // Loading state for images and audio
+  const [expandedAudio, setExpandedAudio] = useState<boolean>(false);
+  const [expandedImages, setExpandedImages] = useState<boolean>(false);
 
   // GENERATE AUDIO FUNCTION
   const generateAudio = async (text: string) => {
@@ -66,12 +68,12 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
 
       if (imagesResponse.ok) {
         const { data } = await imagesResponse.json();
-        const { images } = data;
+        const { imageSections } = data;
 
-        if (!images || images.length === 0) {
+        if (!imageSections || imageSections.length === 0) {
           console.error('No images retrieved from Getty');
         } else {
-          setFetchedImages(images);
+          setImageSections(imageSections);
         }
       } else {
         console.error('Error fetching images:', await imagesResponse.text());
@@ -82,7 +84,12 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
       setLoadingImages(false);
     }
   };
-
+  const fetchAssets = async () => {
+    setLoadingAssets(true);
+    await fetchImages();
+    await generateAudio(script);
+    setLoadingAssets(false);
+  }
   // GENERATE SCRIPT FUNCTION
   const generateScript = async () => {
     setLoadingScript(true);
@@ -96,8 +103,6 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
         const generatedScript = data.data;
         setScript(generatedScript);
 
-        // Generate audio after the script is generated
-        await generateAudio(generatedScript);
       }
     } catch (error) {
       console.error('Error during script generation:', error);
@@ -113,7 +118,6 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
     setLoadingScript(false);
     setAudioUrls([]);
     setImageSections([]);
-    setFetchedImages([]); // Clear images when restarting
   };
 
   const playAudio = (url: string) => {
@@ -125,6 +129,7 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
   useEffect(() => {
     if (script && audioUrls.length > 0 && imageSections.length > 0) {
       onScriptGenerated(script, audioUrls, imageSections);
+      console.log(imageSections)
     }
   }, [script, audioUrls, imageSections, onScriptGenerated]);
 
@@ -186,44 +191,92 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
                 className="min-h-[400px]"
               />
 
-              {/* Display Audio Buttons */}
-              {audioUrls.map((audioUrl, index) => (
-                <Button key={index} onClick={() => playAudio(audioUrl)} className="w-full">
-                  Play Audio {index + 1}
-                </Button>
-              ))}
+              {/* Collapsible Audio Section */}
             </CardContent>
 
-            <CardFooter className="flex justify-between">
+            <CardFooter className="flex justify-end">
               {/* Fetch Images Button */}
-              <Button onClick={fetchImages} className="w-1/4">
+              {/* <Button onClick={fetchImages} className="w-1/4">
                 Fetch Images
-              </Button>
+                </Button> */}
 
               {/* Create Video Button */}
-              <Button onClick={() => console.log('Creating video...')} className="w-1/4">
-                Create Video
+              <Button onClick={fetchAssets} className="w-1/4">
+                {loadingAssets ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating Audio...
+                  </>
+                ) : (
+                  <p>Create Video</p>
+                )}
               </Button>
             </CardFooter>
 
-            {/* Display fetched images */}
-            {loadingImages ? (
-              <p>Loading images...</p>
-            ) : fetchedImages.length > 0 && (
-              <CardContent className="space-y-4">
-                <h2 className="text-xl font-semibold">Fetched Images</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {fetchedImages.map((imageUrl, index) => (
-                    <img
-                      key={index}
-                      src={imageUrl}
-                      alt={`Fetched Image ${index + 1}`}
-                      className="w-full h-auto object-cover"
-                    />
-                  ))}
+            <CardContent>
+              {audioUrls.length > 0 && (
+                <div className="border rounded-md">
+                  <Button
+                    onClick={() => setExpandedAudio(!expandedAudio)}
+                    className="w-full flex justify-between items-center"
+                    variant="ghost"
+                  >
+                    <span>Audio Sections</span>
+                    {expandedAudio ? <ChevronUp /> : <ChevronDown />}
+                  </Button>
+                  {expandedAudio && (
+                    <div className="p-4">
+                      {audioUrls.map((audioUrl, index) => (
+                        <Button key={index} onClick={() => playAudio(audioUrl)} className="w-full mb-2">
+                          Play Audio {index + 1}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </CardContent>
-            )}
+              )}
+            </CardContent>
+
+            {/* Collapsible Images Section */}
+            <CardContent className="space-y-4">
+              {imageSections.length > 0 && (
+                <div className="border rounded-md">
+                  <Button
+                    onClick={() => setExpandedImages(!expandedImages)}
+                    className="w-full flex justify-between items-center p-4"
+                    variant="ghost"
+                  >
+                    <span>Image Sections</span>
+                    {expandedImages ? <ChevronUp /> : <ChevronDown />}
+                  </Button>
+                  {expandedImages && (
+                    <div className="p-4">
+                      {loadingImages ? (
+                        <p>Loading images...</p>
+                      ) : (
+                        <>
+                          {imageSections.map((imageSection, sectionIndex) => (
+                            <div key={sectionIndex} className="space-y-2 mb-4">
+                              <h3 className="text-lg font-medium">Section {sectionIndex + 1}</h3>
+                              <div className="grid grid-cols-3 gap-4">
+                                {imageSection.map((imageUrl, imageIndex) => (
+                                  <img
+                                    key={`${sectionIndex}-${imageIndex}`}
+                                    src={imageUrl}
+                                    alt={`Fetched Image ${sectionIndex + 1}-${imageIndex + 1}`}
+                                    className="w-full h-auto object-cover"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
           </motion.div>
         )}
       </AnimatePresence>

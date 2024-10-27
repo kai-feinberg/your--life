@@ -6,7 +6,6 @@ import axios from 'axios';
 
 // Store your Getty Images API key securely in environment variables
 const GETTY_API_KEY = process.env.GETTY_IMAGES_API_KEY;
-const GETTY_API_SECRET = process.env.GETTY_IMAGES_API_SECRET;
 
 export async function GET(req: Request) {
   try {
@@ -18,7 +17,7 @@ export async function GET(req: Request) {
       # Steph Curry Davidson
       Curry played high school basketball in Charlotte...
 
-      # Stephen CUrry Warriors
+      # Stephen Curry Warriors
       At Davidson College, Curry became a household name...
     `;
 
@@ -30,11 +29,11 @@ export async function GET(req: Request) {
     }
 
     // Fetch images for each heading from Getty Images
-    const imagePromises = headings.map(async (heading) => {
+    const imageSectionsPromises = headings.map(async (heading) => {
       const response = await axios.get(`https://api.gettyimages.com/v3/search/images`, {
         params: {
           phrase: heading,
-          page_size: 1, // Fetch one image per heading
+          page_size: 3, // Fetch two images per heading
         },
         headers: {
           'Api-Key': GETTY_API_KEY,
@@ -42,21 +41,18 @@ export async function GET(req: Request) {
       });
       
       const images = response.data.images;
-      // Return the first image URL if available
-      return images.length > 0 ? images[0].display_sizes[0].uri : null;
+      // Return an array of image URLs for this heading
+      return images.map((image: any) => image.display_sizes[0].uri);
     });
 
     // Resolve all promises for image fetching
-    const images = await Promise.all(imagePromises);
-
-    // Filter out any null images (in case no results are found for some headings)
-    const filteredImages = images.filter((image) => image !== null);
+    const imageSections = await Promise.all(imageSectionsPromises);
 
     // Prepare the response data
     const result = {
       script: script,
       headings: headings,
-      images: filteredImages,
+      imageSections: imageSections,
     };
 
     // Return the response with script and images

@@ -20,13 +20,13 @@ export const MultiSectionVideo: React.FC<MultiSectionVideoProps> = ({
 
   const [audioLengths, setAudioLengths] = useState<number[]>(Array(audioUrls.length).fill(1)); // initialize it to an array of 1s
 
-  console.log("audio urls", audioUrls);
+  // console.log("audio urls", audioUrls);
 
   useEffect(() => {
     const getAudioDurations = async () => {
       const lengths = await Promise.all(audioUrls.map(async (audioUrl) => {
         const audioDuration = await getAudioDurationInSeconds(audioUrl);
-        console.log("audio length",  audioDuration);
+        console.log("audio length", audioDuration);
         return Math.max(1, Math.round(audioDuration * 30)); // Ensure minimum duration of 1 frame
       }));
       setAudioLengths(lengths);
