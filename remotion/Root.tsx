@@ -10,35 +10,15 @@ import {
   VIDEO_HEIGHT,
   VIDEO_WIDTH,
 } from "../types/constants";
-import { NextLogo } from "./MyComp/NextLogo";
+import { getAudioDurationInSeconds } from "@remotion/media-utils";
 
-export const RemotionRoot: React.FC = () => {
+export const RemotionRoot: React.FC = () => {  
   return (
     <>
-      {/* <Composition
-        id={COMP_NAME}
-        component={Main}
-        durationInFrames={DURATION_IN_FRAMES}
-        fps={VIDEO_FPS}
-        width={VIDEO_WIDTH}
-        height={VIDEO_HEIGHT}
-        defaultProps={defaultMyCompProps}
-      />
-      <Composition
-        id="NextLogo"
-        component={NextLogo}
-        durationInFrames={300}
-        fps={30}
-        width={140}
-        height={140}
-        defaultProps={{
-          outProgress: 0,
-        }}
-      /> */}
       <Composition
         id="Test"
         component={Test}
-        durationInFrames={900}
+        durationInFrames={videoProps.durationInFrames}
         fps={30}
         width={900}
         height={600}

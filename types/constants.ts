@@ -1,4 +1,4 @@
-import { string, z } from "zod";
+import { number, string, z } from "zod";
 export const COMP_NAME = "MyComp";
 
 export const CompositionProps = z.object({
@@ -12,9 +12,10 @@ export const videoProps = {
   audioUrls: [] as string[],
   imageSections: [] as string[][],
   titles: [] as string[],
+  durationInFrames: 1000 as number
 };
 
-export const DURATION_IN_FRAMES = 18000;
+export const DURATION_IN_FRAMES = 1800;
 export const VIDEO_WIDTH = 1280;
 export const VIDEO_HEIGHT = 720;
 export const VIDEO_FPS = 30;
