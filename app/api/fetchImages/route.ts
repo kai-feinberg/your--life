@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     // Define headings based on the user's inputted name
     const headings = [
       `${userName} young`,
-      `${userName} middle`,
+      `${userName} adult`,
       `${userName} 2024`,
     ];
 
