@@ -1,6 +1,4 @@
-//route.ts
-//uses gettyimagesapi to retrieve images related to the headings 
-
+// route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -9,37 +7,33 @@ const GETTY_API_KEY = process.env.GETTY_IMAGES_API_KEY;
 
 export async function GET(req: Request) {
   try {
-    // Dummy test script with headings
-    const script = `
-      # Steph Curry 1992
-      Stephen Curry was born in Akron, Ohio, in 1992...
+    // Retrieve the name from query parameters
+    const url = new URL(req.url);
+    const userName = url.searchParams.get('name');
 
-      # Steph Curry Davidson
-      Curry played high school basketball in Charlotte...
-
-      # Stephen Curry Warriors
-      At Davidson College, Curry became a household name...
-    `;
-
-    // Extract headings from the script (assuming they start with #)
-    const headings = script.match(/#(.*)/g)?.map((heading) => heading.replace("#", "").trim());
-
-    if (!headings || headings.length === 0) {
-      return NextResponse.json({ error: 'No headings found in the script' }, { status: 400 });
+    if (!userName) {
+      return NextResponse.json({ error: 'User name is required' }, { status: 400 });
     }
+
+    // Define headings based on the user's inputted name
+    const headings = [
+      `${userName} young`,
+      `${userName} middle`,
+      `${userName} 2024`,
+    ];
 
     // Fetch images for each heading from Getty Images
     const imageSectionsPromises = headings.map(async (heading) => {
       const response = await axios.get(`https://api.gettyimages.com/v3/search/images`, {
         params: {
           phrase: heading,
-          page_size: 3, // Fetch two images per heading
+          page_size: 3, // Fetch three images per heading
         },
         headers: {
           'Api-Key': GETTY_API_KEY,
         },
       });
-      
+
       const images = response.data.images;
       // Return an array of image URLs for this heading
       return images.map((image: any) => image.display_sizes[0].uri);
@@ -50,12 +44,12 @@ export async function GET(req: Request) {
 
     // Prepare the response data
     const result = {
-      script: script,
-      headings: headings,
-      imageSections: imageSections,
+      userName,
+      headings,
+      imageSections,
     };
 
-    // Return the response with script and images
+    // Return the response with user name, headings, and images
     return NextResponse.json({ data: result }, { status: 200 });
 
   } catch (error) {
@@ -63,6 +57,3 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Error fetching images' }, { status: 500 });
   }
 }
-
-
-// We can search images by year... For example (Beginning: (Person or Event Age + 20 Years), Middle: (Person or event age + 40 years), End: (Person or Event: 2024))

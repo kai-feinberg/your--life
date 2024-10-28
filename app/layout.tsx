@@ -2,7 +2,7 @@ import "../styles/global.css";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Your Life",
+  title: "StoryGenie",
   description: "One click informational videos",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 };

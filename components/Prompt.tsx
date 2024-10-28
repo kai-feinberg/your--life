@@ -56,20 +56,20 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
   };
 
   // FETCH IMAGES FUNCTION
-  const fetchImages = async () => {
+  const fetchImages = async (name: string) => {
     setLoadingImages(true); // Start loading state for images
     try {
-      const imagesResponse = await fetch('/api/fetchImages', {
+      const imagesResponse = await fetch(`/api/fetchImages?name=${encodeURIComponent(name)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
+  
       if (imagesResponse.ok) {
         const { data } = await imagesResponse.json();
         const { imageSections } = data;
-
+  
         if (!imageSections || imageSections.length === 0) {
           console.error('No images retrieved from Getty');
         } else {
@@ -84,12 +84,15 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
       setLoadingImages(false);
     }
   };
+  
   const fetchAssets = async () => {
     setLoadingAssets(true);
-    await fetchImages();
+    await fetchImages(scriptPrompt);  // Pass the user inputted name
     await generateAudio(script);
     setLoadingAssets(false);
-  }
+  };
+
+  
   // GENERATE SCRIPT FUNCTION
   const generateScript = async () => {
     setLoadingScript(true);
