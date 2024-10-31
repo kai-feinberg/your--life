@@ -1,6 +1,6 @@
 import { Composition } from "remotion";
 import { Main } from "./MyComp/Main";
-import { Test } from "./MyComp/VideoSection";
+import { Test } from "./MyComp/Test";
 import {
   COMP_NAME,
   defaultMyCompProps,

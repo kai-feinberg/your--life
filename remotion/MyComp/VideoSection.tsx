@@ -12,7 +12,7 @@ import {
 } from "remotion";
 import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import React, { useEffect, useState } from "react";
-import { Animated } from "remotion-animated";
+import { Animated, Scale } from "remotion-animated";
 
 interface VideoSectionProps {
     images?: string[];
@@ -28,7 +28,7 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
     const [audioLength, setAudioLength] = useState(1);
     const { fps } = useVideoConfig();
 
-    
+
     useEffect(() => {
         const getAudioDuration = async () => {
             const audioDuration = await getAudioDurationInSeconds(audioUrl);
@@ -46,15 +46,17 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
             <Series>
                 {images.map((path, index) => (
                     <Series.Sequence key={index} durationInFrames={imageLength} from={index * imageLength}>
-                        <AbsoluteFill className="justify-center items-center">
-                            <Img 
-                                src={path}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'contain'
-                                }}
-                            />
+                        <AbsoluteFill>
+                            <Animated animations={[Scale({ by: 1.1, duration:imageLength })]}>
+                                <Img
+                                    src={path}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain'
+                                    }}
+                                />
+                            </Animated>
                         </AbsoluteFill>
                     </Series.Sequence>
                 ))}
