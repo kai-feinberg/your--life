@@ -17,7 +17,7 @@ export async function GET(req: Request) {
 
     // Define headings based on the user's inputted name
     const headings = [
-      `${userName} young`,
+      `${userName} family`,
       `${userName} adult`,
       `${userName} 2024`,
     ];
@@ -28,6 +28,9 @@ export async function GET(req: Request) {
         params: {
           phrase: heading,
           page_size: 3, // Fetch three images per heading
+          minimum_size: "large",
+         // content_type: "photography", // Ensure quality by limiting to photography
+          
         },
         headers: {
           'Api-Key': GETTY_API_KEY,

@@ -1,3 +1,5 @@
+//Prompt.tsx
+
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -140,7 +142,7 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
     <Card className="w-full max-w-2xl mx-auto mt-8">
       <CardHeader>
         <div className="flex flex-row justify-between items-center">
-          <CardTitle className="text-2xl font-bold text-center">AI Script Generator</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center"> Welcome to StoryGenie! </CardTitle>
           <Button onClick={restart} className="text-sm">
             <RotateCcw className="w-6" />
           </Button>
@@ -149,7 +151,7 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
 
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <h1 className="font-medium text-xl">Enter your script idea</h1>
+          <h1 className="font-medium text-m">Enter the name of any historical figure or celebrity, and watch their story come to life  </h1>
           <Input
             id="prompt"
             placeholder="e.g., LeBron's rise to fame"
