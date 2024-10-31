@@ -23,7 +23,15 @@ export async function GET(req: Request) {
     }
 
     // Prepend the pre-prompts to the user prompt
-    const fullPrompt = `In the style of documentary, provide a narration with distinct headings. \n Keep the script concise and suitable for a 1-minute voiceover (Beginning, Middle, Conlcusion). \n Please include links to at least two reliable sources at the end of the script.Ensure that all sections are delimited with section titles with # in the front\n\n${prompt}`;
+    const fullPrompt = `In the style of documentary, provide a narration with distinct headings. 
+    \n Keep the script concise and suitable for a 1-minute voiceover (Beginning, Middle, Conlcusion). 
+    \n Please include links to at least two reliable sources at the end of the script. 
+    Ensure that all sections are delimited with section titles with # in the front. 
+
+    The section titles should be the name of the person followed by one or two words that describe the section.
+    For example: # Barack Obama Early Life, # Barack Obama Presidency, # Barack Obama Post-Presidency.
+    
+    \n\n${prompt}`;
 
     try {
       // Call OpenAI API to generate a script

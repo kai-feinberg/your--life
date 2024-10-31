@@ -47,7 +47,14 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
                 {images.map((path, index) => (
                     <Series.Sequence key={index} durationInFrames={imageLength} from={index * imageLength}>
                         <AbsoluteFill className="justify-center items-center">
-                            <Img src={path} />
+                            <Img 
+                                src={path}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'contain'
+                                }}
+                            />
                         </AbsoluteFill>
                     </Series.Sequence>
                 ))}

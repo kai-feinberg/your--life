@@ -56,10 +56,10 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
   };
 
   // FETCH IMAGES FUNCTION
-  const fetchImages = async (name: string) => {
+  const fetchImages = async() => {
     setLoadingImages(true); // Start loading state for images
     try {
-      const imagesResponse = await fetch(`/api/fetchImages?name=${encodeURIComponent(name)}`, {
+      const imagesResponse = await fetch(`/api/fetchImages`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
   
   const fetchAssets = async () => {
     setLoadingAssets(true);
-    await fetchImages(scriptPrompt);  // Pass the user inputted name
+    await fetchImages();  // Pass the user inputted name
     await generateAudio(script);
     setLoadingAssets(false);
   };
