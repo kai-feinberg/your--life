@@ -17,21 +17,20 @@ import { RenderControls } from "../components/RenderControls";
 import { Spacing } from "../components/Spacing";
 
 const Home: NextPage = () => {
-  const [text, setText] = useState<string>(defaultMyCompProps.title);
-  const [audioUrls, setAudioUrls] = useState<string[]>([]);
-  const [imageSections, setImageSections] = useState<string[][]>([]);
-  const [isDataReady, setIsDataReady] = useState<boolean>(false);
-  const [totalDuration, setTotalDuration] = useState<number>(0);
 
-  const inputProps = useMemo(() => {
-    return {
-      audioUrls,
-      imageSections,
-      titles: imageSections.map((_, index) => `Section ${index + 1}`),
-      title: text,
-      durationInFrames: totalDuration,
-    };
-  }, [text, audioUrls, imageSections, totalDuration]);
+  const [text, setText] = useState<string>(defaultMyCompProps.title);
+  const [audioUrls, setAudioUrls] = useState<string[]>(defaultMyCompProps.audioUrls);
+  const [imageSections, setImageSections] = useState<string[][]>(defaultMyCompProps.imageSections);
+  const [isDataReady, setIsDataReady] = useState<boolean>(false);
+  const [totalDuration, setTotalDuration] = useState<number>(defaultMyCompProps.durationInFrames);
+
+  const inputProps = useMemo(() => ({
+    audioUrls,
+    imageSections,
+    titles: imageSections.map((_, index) => `Section ${index + 1}`),
+    title: text,
+    durationInFrames: totalDuration || 1,
+  }), [text, audioUrls, imageSections, totalDuration]);
 
   useEffect(() => {
     const calculateTotalDuration = async () => {
@@ -98,7 +97,7 @@ const Home: NextPage = () => {
         inputProps={inputProps}
       />
       <Spacing />
-    </div>
+      </div>
   );
 };
 
