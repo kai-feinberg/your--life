@@ -10,11 +10,11 @@ export const videoProps = z.object({
 }).strict();
 
 export const defaultMyCompProps = {
-  audioUrls: [] as string[],
+  audioUrls: ["https://samplelib.com/lib/preview/mp3/sample-3s.mp3"] as string[],
   imageSections: [] as string[][],
   titles: [] as string[],
-  title: "",
-  durationInFrames: 0
+  title: "multi-section-video",
+  durationInFrames: 1
 } as const;
 
 export const DURATION_IN_FRAMES = 1800;

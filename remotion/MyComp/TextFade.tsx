@@ -4,13 +4,12 @@ import {
   interpolate,
   spring,
   useCurrentFrame,
-  useVideoConfig,
 } from "remotion";
 
 export const TextFade: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const { fps } = useVideoConfig();
+  const fps=30
   const frame = useCurrentFrame();
 
   const progress = spring({

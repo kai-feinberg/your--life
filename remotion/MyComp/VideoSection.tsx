@@ -4,7 +4,6 @@ import {
     Sequence,
     spring,
     useCurrentFrame,
-    useVideoConfig,
     Img,
     staticFile,
     Audio,
@@ -21,13 +20,12 @@ interface VideoSectionProps {
 }
 
 export const VideoSection: React.FC<VideoSectionProps> = ({
-    images = ["lebron1.jpg", "lebron2.jpg"],
+    images = [],
     title = "Default Title",
     audioUrl
 }) => {
     const [audioLength, setAudioLength] = useState(1);
-    const { fps } = useVideoConfig();
-
+    const fps = 30;
 
     useEffect(() => {
         const getAudioDuration = async () => {
@@ -47,7 +45,7 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
                 {images.map((path, index) => (
                     <Series.Sequence key={index} durationInFrames={imageLength} from={index * imageLength}>
                         <AbsoluteFill>
-                            <Animated animations={[Scale({ by: 1.1, duration:imageLength })]}>
+                            <Animated animations={[Scale({ by: 1.1, duration: imageLength })]}>
                                 <Img
                                     src={path}
                                     style={{

@@ -1,7 +1,6 @@
-//Generate Audio -> route.ts
-
 import { NextResponse } from 'next/server';
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
+import { Storage } from '@google-cloud/storage';
 
 // Function to split text into smaller sections
 function parseTextByHeadings(text) {
@@ -16,25 +15,46 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Text is required' }, { status: 400 });
     }
 
-    const client = new TextToSpeechClient();
-    const sections = parseTextByHeadings(text); // Split the script into sections
-    const audioContents = [];
+    const textToSpeechClient = new TextToSpeechClient();
+    const storageClient = new Storage();
+    const bucketName = 'your-life-bucker'; // Replace with your bucket name
+    const sections = parseTextByHeadings(text);
+    const audioUrls = [];
 
-    // Generate audio for each section
-    for (const section of sections) {
+    // Generate audio for each section and upload to Google Cloud Storage
+    for (let i = 0; i < sections.length; i++) {
       const request = {
-        input: { text: section },
+        input: { text: sections[i] },
         voice: { languageCode, name: voiceName },
         audioConfig: { audioEncoding: 'MP3' },
       };
 
-      const [response] = await client.synthesizeSpeech(request);
-      audioContents.push(Buffer.from(response.audioContent).toString('base64')); // Convert to base64
+      const [response] = await textToSpeechClient.synthesizeSpeech(request);
+      
+      // Generate a unique filename
+      const filename = `audio_section_${Date.now()}_${i}.mp3`;
+      
+      // Create a file in the bucket
+      const file = storageClient.bucket(bucketName).file(filename);
+      
+      // Upload the audio content
+      await file.save(response.audioContent, {
+        metadata: { 
+          contentType: 'audio/mpeg' 
+        }
+      });
+
+      // Store the public URL (if needed, you can generate a signed URL instead)
+      const publicUrl = `https://storage.googleapis.com/${bucketName}/${filename}`;
+      audioUrls.push(publicUrl);
     }
 
-    return NextResponse.json({ audioContents }); // Return the audio data
+    return NextResponse.json({ 
+      message: 'Audio files generated and stored successfully', 
+      audioUrls 
+    });
   } catch (error) {
-    console.error('Error generating speech:', error);
-    return NextResponse.json({ error: 'Failed to generate speech' }, { status: 500 });
+    console.error('Error generating and storing speech:', error);
+    return NextResponse.json({ error: 'Failed to generate and store speech' }, { status: 500 });
   }
 }

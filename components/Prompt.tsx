@@ -37,14 +37,17 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
 
       if (response.ok) {
         const data = await response.json();
-        const { audioContents } = data;
+        // const { audioContents } = data;
 
-        const newAudioUrls = audioContents.map((base64AudioContent: string) => {
-          const binaryData = Uint8Array.from(atob(base64AudioContent), c => c.charCodeAt(0));
-          const audioBlob = new Blob([binaryData], { type: 'audio/mpeg' });
-          const url = URL.createObjectURL(audioBlob);
-          return url;
-        });
+        // const newAudioUrls = audioContents.map((base64AudioContent: string) => {
+        //   const binaryData = Uint8Array.from(atob(base64AudioContent), c => c.charCodeAt(0));
+        //   const audioBlob = new Blob([binaryData], { type: 'audio/mpeg' });
+        //   const url = URL.createObjectURL(audioBlob);
+        //   console.log(url)
+        //   return url;
+        // });
+
+        const newAudioUrls = data.audioUrls;
 
         setAudioUrls(newAudioUrls);
       } else {
