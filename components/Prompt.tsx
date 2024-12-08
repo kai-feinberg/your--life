@@ -154,7 +154,7 @@ export const Prompt: React.FC<{ onScriptGenerated: OnScriptGeneratedFunction }> 
           <h1 className="font-medium text-m">Enter the name of any historical figure or celebrity, and watch their story come to life  </h1>
           <Input
             id="prompt"
-            placeholder="e.g., LeBron's rise to fame"
+            placeholder="e.g., 'Andy Warhol'"
             value={scriptPrompt}
             onChange={(e) => setScriptPrompt(e.target.value)}
             className="w-full"

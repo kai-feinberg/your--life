@@ -22,8 +22,9 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
+    //Professional Life/Achievements, Personal Life, Scandals. Find the facts and then massage the language to fit that. 
     // Prepend the pre-prompts to the user prompt
-    const fullPrompt = `In the style of documentary, provide a narration with distinct headings. \n Keep the script concise and suitable for a 1-minute voiceover (Beginning, Middle, Conlcusion). \n Please include links to at least two reliable sources at the end of the script.Ensure that all sections are delimited with section titles with # in the front\n\n${prompt}`;
+    const fullPrompt = `In the style of documentary, provide a narration with distinct headings in 3 sections. \n Keep the script concise and suitable for a 1-minute voiceover. \n Please include links to at least two reliable sources at the end of the script, and ensure that the reliable sources section is delimited with # in the front, no delimiters for the section headings\n\n${prompt}`;
 
     try {
       // Call OpenAI API to generate a script

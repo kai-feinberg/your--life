@@ -1,7 +1,13 @@
-//Generate Audio -> route.ts
-
 import { NextResponse } from 'next/server';
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
+
+// Function to clean text by removing lines starting with #
+function cleanText(text) {
+  return text
+    .split('\n') // Split text into lines
+    .filter((line) => !line.trim().startsWith('#')) // Remove lines starting with #
+    .join('\n'); // Rejoin the remaining lines
+}
 
 // Function to split text into smaller sections
 function parseTextByHeadings(text) {
@@ -17,7 +23,10 @@ export async function POST(req) {
     }
 
     const client = new TextToSpeechClient();
-    const sections = parseTextByHeadings(text); // Split the script into sections
+
+    // Clean the text to remove unwanted lines
+    const cleanedText = cleanText(text);
+    const sections = parseTextByHeadings(cleanedText); // Split the script into sections
     const audioContents = [];
 
     // Generate audio for each section
