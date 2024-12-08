@@ -43,7 +43,8 @@ export default function NonFamous() {
                     id="script"
                     value={script}
                     onChange={(e) => setScript(e.target.value)}
-                    placeholder={`# Introduction
+                    placeholder={`
+                        # Introduction
                         Your content here
 
                         # Section 1
