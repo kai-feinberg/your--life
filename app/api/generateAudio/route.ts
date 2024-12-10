@@ -6,7 +6,7 @@ import { Storage } from '@google-cloud/storage';
 function cleanText(text) {
   return text
     .split('\n') // Split text into lines
-    .filter((line) => !line.trim().startsWith('#')) // Remove lines starting with #
+    .map(line => line.replace('#', ' ')) // Replace '#' with a space
     .join('\n'); // Rejoin the remaining lines
 }
 
@@ -26,8 +26,11 @@ export async function POST(req) {
     const textToSpeechClient = new TextToSpeechClient();
     const storageClient = new Storage();
     const bucketName = 'your-life-bucker'; // Replace with your bucket name
-    const sections = parseTextByHeadings(text);
+    let sections = parseTextByHeadings(text);
     const audioUrls = [];
+
+    sections = sections.filter(section => !section.trim().startsWith('#Citations'));
+    sections = sections.map(cleanText);
 
     // Generate audio for each section and upload to Google Cloud Storage
     for (let i = 0; i < sections.length; i++) {

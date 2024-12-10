@@ -24,7 +24,7 @@ export async function GET(req: Request) {
 
     //Professional Life/Achievements, Personal Life, Scandals. Find the facts and then massage the language to fit that. 
     // Prepend the pre-prompts to the user prompt
-    const fullPrompt = `In the style of documentary, provide a narration with distinct headings in 3 sections. \n Keep the script concise and suitable for a 1-minute voiceover. \n Please include links to at least two reliable sources at the end of the script, and ensure that the reliable sources section is delimited with # in the front, no delimiters for the section headings\n\n${prompt}`;
+    const fullPrompt = `In the style of documentary, provide a narration with distinct headings in 3 sections. \n Keep the script concise and suitable for a 1-minute voiceover. \n Please include links to at least two reliable sources at the end of the script, and ensure that the reliable sources section is delimited with #Citations in the front, use a delimiter of # for the section headings\n\n${prompt}`;
 
     try {
       // Call OpenAI API to generate a script
