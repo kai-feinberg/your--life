@@ -1,29 +1,29 @@
 import { Composition } from "remotion";
-import { Main } from "./MyComp/Main";
-import { Test } from "./MyComp/VideoSection";
+import { MultiSectionVideo } from "./MyComp/MultiSectionVideo";
 import {
   COMP_NAME,
   defaultMyCompProps,
-  videoProps,
   DURATION_IN_FRAMES,
   VIDEO_FPS,
   VIDEO_HEIGHT,
   VIDEO_WIDTH,
 } from "../types/constants";
-import { getAudioDurationInSeconds } from "@remotion/media-utils";
 
-export const RemotionRoot: React.FC = () => {  
+export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="Test"
-        component={Test}
-        durationInFrames={videoProps.durationInFrames}
-        fps={30}
-        width={900}
-        height={600}
-        defaultProps={videoProps}
+        // id="my-comp"
+        name= "test"
+        id={COMP_NAME}
+        component={MultiSectionVideo}
+        durationInFrames={DURATION_IN_FRAMES}
+        fps={VIDEO_FPS}
+        width={VIDEO_WIDTH}
+        height={VIDEO_HEIGHT}
+        defaultProps={defaultMyCompProps}
       />
+
     </>
   );
 };

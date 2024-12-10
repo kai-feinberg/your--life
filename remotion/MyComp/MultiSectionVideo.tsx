@@ -11,13 +11,13 @@ interface MultiSectionVideoProps {
   imageSections: string[][];
   titles?: string[];
 }
-
-export const MultiSectionVideo: React.FC<MultiSectionVideoProps> = ({
+export const MultiSectionVideo = ({
   audioUrls,
   imageSections,
   titles = [],
-}) => {
+}: MultiSectionVideoProps) => {
 
+  console.log("audio urls", audioUrls);
   const [audioLengths, setAudioLengths] = useState<number[]>(Array(audioUrls.length).fill(1)); // initialize it to an array of 1s
 
   // console.log("audio urls", audioUrls);

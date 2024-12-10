@@ -4,7 +4,6 @@ import {
     Sequence,
     spring,
     useCurrentFrame,
-    useVideoConfig,
     Img,
     staticFile,
     Audio,
@@ -12,7 +11,7 @@ import {
 } from "remotion";
 import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import React, { useEffect, useState } from "react";
-import { Animated } from "remotion-animated";
+import { Animated, Scale } from "remotion-animated";
 
 interface VideoSectionProps {
     images?: string[];
@@ -21,14 +20,13 @@ interface VideoSectionProps {
 }
 
 export const VideoSection: React.FC<VideoSectionProps> = ({
-    images = ["lebron1.jpg", "lebron2.jpg"],
+    images = [],
     title = "Default Title",
     audioUrl
 }) => {
     const [audioLength, setAudioLength] = useState(1);
-    const { fps } = useVideoConfig();
+    const fps = 30;
 
-    
     useEffect(() => {
         const getAudioDuration = async () => {
             const audioDuration = await getAudioDurationInSeconds(audioUrl);
@@ -46,15 +44,17 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
             <Series>
                 {images.map((path, index) => (
                     <Series.Sequence key={index} durationInFrames={imageLength} from={index * imageLength}>
-                        <AbsoluteFill className="justify-center items-center">
-                            <Img 
-                                src={path}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'contain'
-                                }}
-                            />
+                        <AbsoluteFill>
+                            <Animated animations={[Scale({ by: 1.1, duration: imageLength })]}>
+                                <Img
+                                    src={path}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain'
+                                    }}
+                                />
+                            </Animated>
                         </AbsoluteFill>
                     </Series.Sequence>
                 ))}
