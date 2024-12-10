@@ -2,6 +2,14 @@ import { NextResponse } from 'next/server';
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 import { Storage } from '@google-cloud/storage';
 
+// Function to clean text by removing lines starting with #
+function cleanText(text) {
+  return text
+    .split('\n') // Split text into lines
+    .filter((line) => !line.trim().startsWith('#')) // Remove lines starting with #
+    .join('\n'); // Rejoin the remaining lines
+}
+
 // Function to split text into smaller sections
 function parseTextByHeadings(text) {
   return text.split(/(?:^|\n)(?=#)/g);
@@ -14,7 +22,7 @@ export async function POST(req) {
     if (!text) {
       return NextResponse.json({ error: 'Text is required' }, { status: 400 });
     }
-
+    
     const textToSpeechClient = new TextToSpeechClient();
     const storageClient = new Storage();
     const bucketName = 'your-life-bucker'; // Replace with your bucket name
