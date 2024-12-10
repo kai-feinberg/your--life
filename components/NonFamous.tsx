@@ -35,7 +35,7 @@ export default function NonFamous() {
 
     return (
         <div className="container mx-auto p-4 space-y-6 bg-white rounded-xl">
-            <h1 className="text-2xl font-bold mb-4">Script Image Uploader</h1>
+            <h1 className="text-2xl font-bold mb-4">Custom Biography Video</h1>
 
             <div className="space-y-2">
                 <Label htmlFor="script">Enter your script (use # for headers):</Label>
